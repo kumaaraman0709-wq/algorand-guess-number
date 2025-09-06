@@ -1,0 +1,109 @@
+#pragma version 10
+#pragma typetrack false
+
+// @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
+main:
+    intcblock 0 1
+    bytecblock "secret"
+    txn ApplicationID
+    bnz main_after_if_else@2
+    // smart_contracts/hello_world/contract.algo.ts:4
+    // secret = GlobalState<uint64>({ key: "secret", initialValue: 7 })
+    bytec_0 // "secret"
+    pushint 7 // 7
+    app_global_put
+
+main_after_if_else@2:
+    // smart_contracts/hello_world/contract.algo.ts:3
+    // export class GuessNumber extends Contract {
+    txn NumAppArgs
+    bz main_bare_routing@8
+    pushbytes 0xabe0f9ce // method "guess(uint64)string"
+    txna ApplicationArgs 0
+    match main_guess_route@5
+
+main_after_if_else@12:
+    // smart_contracts/hello_world/contract.algo.ts:3
+    // export class GuessNumber extends Contract {
+    intc_0 // 0
+    return
+
+main_guess_route@5:
+    // smart_contracts/hello_world/contract.algo.ts:6
+    // guess(num: uint64): string {
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/hello_world/contract.algo.ts:3
+    // export class GuessNumber extends Contract {
+    txna ApplicationArgs 1
+    btoi
+    // smart_contracts/hello_world/contract.algo.ts:6
+    // guess(num: uint64): string {
+    callsub guess
+    dup
+    len
+    itob
+    extract 6 2
+    swap
+    concat
+    pushbytes 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+main_bare_routing@8:
+    // smart_contracts/hello_world/contract.algo.ts:3
+    // export class GuessNumber extends Contract {
+    txn OnCompletion
+    bnz main_after_if_else@12
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    intc_1 // 1
+    return
+
+
+// smart_contracts/hello_world/contract.algo.ts::GuessNumber.guess(num: uint64) -> bytes:
+guess:
+    // smart_contracts/hello_world/contract.algo.ts:6
+    // guess(num: uint64): string {
+    proto 1 1
+    // smart_contracts/hello_world/contract.algo.ts:4
+    // secret = GlobalState<uint64>({ key: "secret", initialValue: 7 })
+    intc_0 // 0
+    bytec_0 // "secret"
+    app_global_get_ex
+    assert // check GlobalState exists
+    // smart_contracts/hello_world/contract.algo.ts:7
+    // if (num === this.secret.value) return "correct"
+    frame_dig -1
+    ==
+    bz guess_after_if_else@2
+    pushbytes "correct"
+    retsub
+
+guess_after_if_else@2:
+    // smart_contracts/hello_world/contract.algo.ts:4
+    // secret = GlobalState<uint64>({ key: "secret", initialValue: 7 })
+    intc_0 // 0
+    bytec_0 // "secret"
+    app_global_get_ex
+    assert // check GlobalState exists
+    // smart_contracts/hello_world/contract.algo.ts:8
+    // return num > this.secret.value ? "too high" : "too low"
+    frame_dig -1
+    <
+    bz guess_ternary_false@4
+    pushbytes "too high"
+    retsub
+
+guess_ternary_false@4:
+    // smart_contracts/hello_world/contract.algo.ts:8
+    // return num > this.secret.value ? "too high" : "too low"
+    pushbytes "too low"
+    retsub
