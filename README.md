@@ -9,7 +9,8 @@ Welcome to **Guess Number**, a simple and fun decentralized application (dApp) b
 **Guess Number** is a smart contract-based game where users try to guess a secret number stored on-chain. It’s designed to be simple enough for beginners, yet practical enough to demonstrate real-world smart contract usage on Algorand.
 
 This project is great for developers exploring Algorand, learning about global state, or wanting to build gamified blockchain experiences.
-![alt text](image.png)           
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/d323e9d2-ff26-4f66-b6fd-3188ba9b984d" />
+          
 https://lora.algokit.io/testnet/application/745556245
 ---
 
