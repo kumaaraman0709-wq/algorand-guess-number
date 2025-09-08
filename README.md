@@ -1,22 +1,62 @@
-# ALGORAND
+# 🔢 Guess Number dApp on Algorand
 
-Welcome to your new AlgoKit project!
+Welcome to **Guess Number**, a simple and fun decentralized application (dApp) built on the Algorand blockchain. This project demonstrates how to build interactive smart contracts using TypeScript and Algorand’s secure and scalable infrastructure.
 
-This is your workspace root. A `workspace` in AlgoKit is an orchestrated collection of standalone projects (backends, smart contracts, frontend apps and etc).
+---
 
-By default, `projects_root_path` parameter is set to `projects`. Which instructs AlgoKit CLI to create a new directory under `projects` directory when new project is instantiated via `algokit init` at the root of the workspace.
+## 📖 Project Description
 
-## Getting Started
+**Guess Number** is a smart contract-based game where users try to guess a secret number stored on-chain. It’s designed to be simple enough for beginners, yet practical enough to demonstrate real-world smart contract usage on Algorand.
 
-To get started refer to `README.md` files in respective sub-projects in the `projects` directory.
+This project is great for developers exploring Algorand, learning about global state, or wanting to build gamified blockchain experiences.
+![alt text](image.png)           
+https://lora.algokit.io/testnet/application/745556245
+---
 
-To learn more about algokit, visit [documentation](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/algokit.md).
+## 🚀 What It Does
 
-### GitHub Codespaces
+- Stores a secret number in the smart contract's global state.
+- Accepts a user’s guess as input.
+- Compares the guess to the secret number.
+- Returns one of the following responses:
+  - ✅ `"correct"` — if the guess matches the secret
+  - 🔼 `"too high"` — if the guess is greater than the secret
+  - 🔽 `"too low"` — if the guess is less than the secret
 
-To get started execute:
+---
 
-1. `algokit generate devcontainer` - invoking this command from the root of this repository will create a `devcontainer.json` file with all the configuration needed to run this project in a GitHub codespace. [Run the repository inside a codespace](https://docs.github.com/en/codespaces/getting-started/quickstart) to get started.
-2. `algokit init` - invoke this command inside a github codespace to launch an interactive wizard to guide you through the process of creating a new AlgoKit project
+## ✨ Features
 
-Powered by [Copier templates](https://copier.readthedocs.io/en/stable/).
+- 🧠 **On-Chain Logic**: All validation is done by the smart contract.
+- ⚡ **Fast & Efficient**: Powered by Algorand's high-speed network and low fees.
+- 💬 **Immediate Feedback**: Players get a response instantly after guessing.
+- 🧱 **TypeScript Smart Contract**: Built using the modern `@algorandfoundation/algorand-typescript` framework.
+- 📚 **Beginner-Friendly**: Clear, simple logic perfect for learning and experimenting.
+
+---
+
+## 🔗 Deployed Smart Contract
+
+🧠 Smart Contract: [**guess number**](#)  
+> Replace this link with your deployed contract address, app ID, or AlgoExplorer URL once live.
+
+---
+
+## 🧠 Smart Contract Code
+
+Here’s the smart contract that powers the game:
+
+```ts
+
+
+import { Contract, GlobalState, uint64 } from '@algorandfoundation/algorand-typescript'
+
+export class GuessNumber extends Contract {
+  secret = GlobalState<uint64>({ key: "secret", initialValue: 7 })
+
+  guess(num: uint64): string {
+    if (num === this.secret.value) return "correct"
+    return num > this.secret.value ? "too high" : "too low"
+  }
+}
+
